@@ -1,0 +1,60 @@
+2007-05-23 13:11  mgrimes
+
+	* Build.PL, MANIFEST, Makefile.PL, lib/Finance/Bank/Schwab.pm,
+	  t/00-new.t, t/10-check_balance.t, t/96-kwalitee.t, t/97-critic.t,
+	  t/98-pod.t, t/99-podcoverage.t, t/perlcriticrc: Updated tests,
+	  etc to prepare for CPAN release
+
+2006-08-08 14:09  mgrimes
+
+	* lib/Finance/Bank/Schwab.pm: Updated to fit change in Schwab
+	  website.
+
+2005-11-23 10:22  mgrimes
+
+	* lib/Finance/Bank/Schwab.pm: Changed the format for the "At A
+	  Glance" page.
+
+2005-11-23 10:22  mgrimes
+
+	* t.pl: Testing the new format.
+
+2005-08-23 08:56  mgrimes
+
+	* lib/Finance/Bank/Schwab.pm: added grab of the bank info
+
+2005-07-14 11:36  mgrimes
+
+	* lib/Finance/Bank/Schwab.pm: Fixed a bug in that didn't recognize
+	  negative numbers
+
+2005-07-14 11:36  mgrimes
+
+	* Makefile.PL: Added the new version of WWW::MEchanize
+
+2005-07-13 17:49  mgrimes
+
+	* tmp.log: deleted tmp.log
+
+2005-07-13 17:13  mgrimes
+
+	* MANIFEST, Makefile.PL, tmp.log, lib/Finance/Bank/Schwab.pm,
+	  t/10-check_balance.t: Added pod Fixed change in the schwab
+	  account
+
+2005-07-09 09:21  mgrimes
+
+	* t/10-check_balance.t: minor changes
+
+2005-07-05 18:42  mgrimes
+
+	* MANIFEST, Makefile.PL, README.head, t.pl, tmp.log,
+	  lib/Finance/Bank/Schwab.pm, t/00-new.t, t/10-check_balance.t,
+	  t/98-pod.t, t/99-podcoverage.t: Initial revision
+
+2005-07-05 18:42  mgrimes
+
+	* MANIFEST, Makefile.PL, README.head, t.pl, tmp.log,
+	  lib/Finance/Bank/Schwab.pm, t/00-new.t, t/10-check_balance.t,
+	  t/98-pod.t, t/99-podcoverage.t: initial import
+

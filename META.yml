@@ -1,6 +1,6 @@
 ---
 name: Finance-Bank-Schwab
-version: 1.10
+version: 1.11
 author:
   - 'Mark V. Grimes <mgrimes@cpan.org>'
 abstract: Check your Charles Schwab accounts from Perl
@@ -13,7 +13,7 @@ requires:
 provides:
   Finance::Bank::Schwab:
     file: lib/Finance/Bank/Schwab.pm
-    version: 1.10
+    version: 1.11
   Finance::Bank::Schwab::Account:
     file: lib/Finance/Bank/Schwab.pm
 generated_by: Module::Build version 0.2808

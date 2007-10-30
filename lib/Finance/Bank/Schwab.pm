@@ -23,7 +23,7 @@ use warnings;
 use Carp;
 use WWW::Mechanize;
 
-our $VERSION = '1.10';
+our $VERSION = '1.11';
 
 our $ua = WWW::Mechanize->new(
     env_proxy => 1, 

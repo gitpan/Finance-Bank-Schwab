@@ -1,3 +1,16 @@
+2007-10-30 21:45  mgrimes
+
+	* ., .cvsignore, .releaserc, lib/Finance/Bank/Schwab.pm: Cleanup
+	  for release and move to svn
+
+2007-10-30 21:41  mgrimes
+
+	* lib/Finance/Bank/Schwab.pm: Updated version
+
+2007-10-30 21:40  mgrimes
+
+	* Build.PL: Fixed Build.PL to work with MakeMaker
+
 2007-09-19 17:26  mgrimes
 
 	* ., .cvsignore, .releaserc, Build.PL, MANIFEST, MANIFEST.skip,

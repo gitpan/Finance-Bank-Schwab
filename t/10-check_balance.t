@@ -4,16 +4,14 @@ use strict;
 use warnings;
 
 use Test::More;
+use Finance::Bank::Schwab;
 
 my $userid = $ENV{F_C_SCHWAB_USERID};
 my $passwd = $ENV{F_C_SCHWAB_PASSWD};
 
 plan skip_all => "- Need password to fully test. To enable tests set F_C_SCHWAB_USERID F_C_SCHWAB_PASSWD environment variables."
 		unless $userid && $passwd;
-plan tests => 3;
-
-# Test set 1 -- can we load the library?
-BEGIN { use_ok( 'Finance::Bank::Schwab' ); };
+plan tests => 2;
 
 # Test set 2 -- create client with ordered list of arguements
 my @accounts = Finance::Bank::Schwab->check_balance(

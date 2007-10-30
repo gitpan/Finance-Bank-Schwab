@@ -23,8 +23,7 @@ use warnings;
 use Carp;
 use WWW::Mechanize;
 
-use vars qw($VERSION);
-$VERSION = sprintf("%d.%02d", q$Revision: 1.7 $ =~ /(\d+)\.(\d+)/);
+our $VERSION = '1.10';
 
 our $ua = WWW::Mechanize->new(
     env_proxy => 1, 

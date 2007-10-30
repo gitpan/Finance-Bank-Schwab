@@ -1,10 +1,15 @@
-MANIFEST
-ChangeLog
 Build.PL
-README
+ChangeLog
 lib/Finance/Bank/Schwab.pm
+Makefile.PL
+MANIFEST
+META.yml			Module meta-data (added by MakeMaker)
+README
+samples/get_balances.pl
 t/00-new.t
 t/10-check_balance.t
+t/96-kwalitee.t
+t/97-critic.t
 t/98-pod.t
 t/99-podcoverage.t
-META.yml                                 Module meta-data (added by MakeMaker)
+t/perlcriticrc

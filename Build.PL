@@ -9,6 +9,10 @@ my $build = Module::Build->new(
 						'Carp'				=> 0,
 						'WWW::Mechanize'	=> 1.00,
 					   },
+    build_requires  => {
+                        'Test::More'        => 0,
+                        'File::Spec'        => 0,
+                       },
 );
 $build->create_build_script;
 

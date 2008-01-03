@@ -2,11 +2,11 @@ package Finance::Bank::Schwab;
 
 ###########################################################################
 # Finance::Bank::Schwab
-# Mark V. Grimes
+# Mark Grimes
 # $Id: Schwab.pm,v 1.7 2007/05/23 20:11:07 mgrimes Exp $
 #
 # Check you account blances at Charles Schwab.
-# Copyright (c) 2005 Mark V. Grimes (mgrimes@cpan.org).
+# Copyright (c) 2005 Mark Grimes (mgrimes@cpan.org).
 # All rights reserved. This program is free software; you can redistribute
 # it and/or modify it under the same terms as Perl itself.
 #
@@ -23,7 +23,7 @@ use warnings;
 use Carp;
 use WWW::Mechanize;
 
-our $VERSION = '1.11';
+our $VERSION = '1.12';
 
 our $ua = WWW::Mechanize->new(
     env_proxy => 1, 
@@ -204,7 +204,7 @@ some code and the pod were all taken from Simon's module.
 
 =head1 AUTHOR
 
-Mark V. Grimes <mgrimes@cpan.org>
+Mark Grimes <mgrimes@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 

@@ -1,8 +1,8 @@
 ---
 name: Finance-Bank-Schwab
-version: 1.11
+version: 1.12
 author:
-  - 'Mark V. Grimes <mgrimes@cpan.org>'
+  - 'Mark Grimes <mgrimes@cpan.org>'
 abstract: Check your Charles Schwab accounts from Perl
 license: perl
 resources:
@@ -10,10 +10,13 @@ resources:
 requires:
   Carp: 0
   WWW::Mechanize: 1
+build_requires:
+  File::Spec: 0
+  Test::More: 0
 provides:
   Finance::Bank::Schwab:
     file: lib/Finance/Bank/Schwab.pm
-    version: 1.11
+    version: 1.12
   Finance::Bank::Schwab::Account:
     file: lib/Finance/Bank/Schwab.pm
 generated_by: Module::Build version 0.2808

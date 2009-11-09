@@ -1,5 +1,5 @@
 Build.PL
-ChangeLog
+Changes
 lib/Finance/Bank/Schwab.pm
 Makefile.PL
 MANIFEST

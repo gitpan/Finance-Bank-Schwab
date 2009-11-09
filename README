@@ -12,7 +12,7 @@ SYNOPSIS
               printf "%20s : %8s / %8s : USD %9.2f\n",
               $_->name, $_->sort_code, $_->account_no, $_->balance;
       }
-  
+
 DESCRIPTION
     This module provides a rudimentary interface to the Charles Schwab site
     at "https://investing.schwab.com/trading/start". You will need either
@@ -56,7 +56,7 @@ AUTHOR
     Mark Grimes <mgrimes@cpan.org>
 
 COPYRIGHT AND LICENSE
-    Copyright (C) 2005-7 by mgrimes
+    Copyright (C) 2005-9 by mgrimes
 
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself, either Perl version 5.8.2 or, at

@@ -3,14 +3,11 @@ package Finance::Bank::Schwab;
 ###########################################################################
 # Finance::Bank::Schwab
 # Mark Grimes
-# $Id: Schwab.pm,v 1.7 2007/05/23 20:11:07 mgrimes Exp $
 #
 # Check you account blances at Charles Schwab.
-# Copyright (c) 2005 Mark Grimes (mgrimes@cpan.org).
+# Copyright (c) 2005-2009 Mark Grimes (mgrimes@cpan.org).
 # All rights reserved. This program is free software; you can redistribute
 # it and/or modify it under the same terms as Perl itself.
-#
-# Formatted with tabstops at 4
 #
 # Parts of this package were inspired by:
 #   Simon Cozens - Finance::Bank::Lloyds module
@@ -23,116 +20,109 @@ use warnings;
 use Carp;
 use WWW::Mechanize;
 
-our $VERSION = '1.12';
+our $VERSION = '1.14';
 
 our $ua = WWW::Mechanize->new(
-    env_proxy => 1, 
-    keep_alive => 1, 
-    timeout => 30,
-); 
-
+    env_proxy  => 1,
+    keep_alive => 1,
+    timeout    => 30,
+);
 
 sub check_balance {
-    my ($class, %opts) = @_;
-    croak "Must provide a password" unless exists $opts{password};
-    croak "Must provide a username" unless exists $opts{username};
+    my ( $class, %opts ) = @_;
+    my $content;
 
-    my $self = bless { %opts }, $class;
+    if ( $opts{content} ) {
 
-    $ua->get("https://investing.schwab.com/trading/start") or die "couldn't load inital page";
-    $ua->submit_form(
-    	form_name 	=> 'SignonForm',
-    	fields		=> {
-    			'SignonAccountNumber'	=> $opts{username},
-    			'SignonPassword'		=> $opts{password},
-    		},
-    ) or die "couldn't sign on to account";
-    
-	
-	# 7/13/05 - no longer works... the "At a Glance" link comes from javascript,
-	# but it appears that we can just just to 
-	# https://investing.schwab.com/secure/schwab/overview?lvl1=overview
+        # If we give it a file, use the file rather than downloading
+        open my $fh, "<", $opts{content} or confess;
+        $content = do { local $/ = undef; <$fh> };
+        close $fh;
 
-	# Open the top part of the frame
-	# $ua->follow_link( name => 'CCBodyi' ) or die "couldn't find the main page frame"
+    } else {
 
-	# Open the At a Glance page
-	# $ua->follow_link( text => 'At a Glance' );
+        croak "Must provide a password" unless exists $opts{password};
+        croak "Must provide a username" unless exists $opts{username};
 
-	# now the site spits out the links with javascript src'ed at the top of the page
-	# my ($javascript_url) = $ua->content =~ m!<script language="JavaScript" src="([^"])!;
-	# die "couldn't file the javascript url\n" unless $javascript_url;
-	# $ua->get( $javascript_url ) or die "couln't load the javascript url";
-	# my ($overview_url) = $ua->content =~ m!"(.*)\\">At a Glance!;
-	# https://investing.schwab.com/secure/schwab/overview?cmsid=P-140110&lvl1=overview\">At a Glance
-	# but is doesn't look like we need the 
-	
-	my (@accounts, %balance_info);
-	my (%invest_accnts, %bank_accnts);
-	
-	if( $ua->get( "https://investing.schwab.com/secure/schwab/overview?lvl1=overview" ) ){
-		%invest_accnts = $ua->content =~
-			m!
-				<tr[^>]*>\s*
-					<td\ class="asColBrdr[^"]*">
-						<a[^>]*>
-							([\d-]+)		# account number (name?)
-						</a>
-					</td>
-					<td\ class="nbr\ asColBrdr[^"]*">
+        my $self = bless {%opts}, $class;
+
+        $ua->get("https://investing.schwab.com/trading/start")
+          or croak "couldn't load inital page";
+        $ua->submit_form(
+            form_name => 'SignonForm',
+            fields    => {
+                'SignonAccountNumber' => $opts{username},
+                'SignonPassword'      => $opts{password},
+            },
+        ) or croak "couldn't sign on to account";
+
+        $content = $ua->content;
+    }
+
+    if ( $opts{log} ) {
+
+        # Dump to the filename passed in log
+        open( my $fh, ">", $opts{log} ) or confess;
+        print $fh $content;
+        close $fh;
+    }
+
+    my @balance_info = $content =~ m!
+				<tr[^>]*>                   \s*
+
+					<td\ class="nWrap">     \s*
+						<a[^>]*>            \s*
+							([\d\-.]+)	    # account number
+						</a>                \s*
+                        (?: <sup>[^<]*</sup> )?
+                        [^<]*
+					</td>                   \s*
+
+                    <td[^>]*> \s* <span[^>]*> 
+                        ([^<]+)               # account name
+                    </span> \s* </td>       \s*
+                        
+					<td[^>]*>               \s*
+                        <span[^>]*>         \s*
 						(-?\$[\d,\.]+)		# account balance
-					</td>
-
+                        </span>           
 			!sxig;
-	} else {
-		warn "Couldn't load the overview page, no investment accounts?";
-	}
 
-	if( $ua->get( "https://investing.schwab.com/service?request=BankingHome&lvl1=banking" ) ){
-		%bank_accnts = $ua->content =~ 
-			m!
-				Account \s* ([\d-]+) \s*	# account number (name?)
-				.*?
-				Total \s+ Balance</font></td> \s*
-				<td[^>]*><font[^>]*> \s*
-				(-?\$[\d,\.]+)		# account balance
-			!sxig;
-		
-	} else {
-		warn "Couldn't load the banking page, no bank accounts?";
-	}
+    # use Data::Dumper;
+    # print Dumper \@balance_info;
 
-	%balance_info = ( %invest_accnts, %bank_accnts );
+    my @accounts;
+    while (@balance_info) {
+        my $number  = shift @balance_info;
+        my $name    = shift @balance_info;
+        my $balance = shift @balance_info;
+        $balance =~ s/[\$,]//g;
 
-	# use Data::Dumper;
-	# print Dumper \%balance_info;
-	# exit();
-
-	#print "Account: $account_no\n";
-	#print "Balance: $balance\n";
-	#open(F,">tmp.log");
-	#print F $ua->content;
-	#close F;
-
-	for (keys %balance_info){
-		$balance_info{$_} =~ s/[\$,]//g;
-
-		push @accounts, (bless {
-			balance		=> $balance_info{$_},
-			name		=> $_,
-			sort_code	=> $_,
-			account_no	=> $_,
-			# parent		=> $self,
-			statement	=> undef,
-		}, "Finance::Bank::Schwab::Account");
-	}
+        push @accounts, (
+            bless {
+                balance    => $balance,
+                name       => $name,
+                sort_code  => $name,
+                account_no => $number,
+                ## parent		=> $self,
+                statement => undef,
+            },
+            "Finance::Bank::Schwab::Account"
+        );
+    }
     return @accounts;
 }
 
 package Finance::Bank::Schwab::Account;
+
 # Basic OO smoke-and-mirrors Thingy
 no strict;
-sub AUTOLOAD { my $self=shift; $AUTOLOAD =~ s/.*:://; $self->{$AUTOLOAD} }
+
+sub AUTOLOAD {
+    my $self = shift;
+    $AUTOLOAD =~ s/.*:://;
+    return $self->{$AUTOLOAD};
+}
 
 1;
 
@@ -208,7 +198,7 @@ Mark Grimes <mgrimes@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2005-7 by mgrimes
+Copyright (C) 2005-9 by mgrimes
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.8.2 or,

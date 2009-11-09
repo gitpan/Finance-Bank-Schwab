@@ -7,13 +7,15 @@ use Finance::Bank::Schwab;
 my $userid = $ARGV[0];
 my $passwd = $ARGV[1];
 
-die "Usage: $0 <userid> <passwd>\n"
-		unless $userid && $passwd;
+# die "Usage: $0 <userid> <passwd>\n"
+# 		unless $userid && $passwd;
 
 print "Retrieving account balances from Schwab\n";
 my @accounts = Finance::Bank::Schwab->check_balance(
     			'username'	=> $userid,
     			'password'	=> $passwd,
+                # 'log' => 'tmp.log',
+                'content' => 'tmp.log',
 		 );
 
 print "Account balances:\n";

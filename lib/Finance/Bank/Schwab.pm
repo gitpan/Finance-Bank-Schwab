@@ -20,7 +20,7 @@ use warnings;
 use Carp;
 use WWW::Mechanize;
 
-our $VERSION = '1.14';
+our $VERSION = '1.16';
 
 our $ua = WWW::Mechanize->new(
     env_proxy  => 1,
@@ -68,25 +68,33 @@ sub check_balance {
     }
 
     my @balance_info = $content =~ m!
-				<tr[^>]*>                   \s*
+                <tr[^>]*>                   \s*
 
-					<td\ class="nWrap">     \s*
-						<a[^>]*>            \s*
-							([\d\-.]+)	    # account number
-						</a>                \s*
+                    <td\ class="nWrap">     \s*
+                        <a[^>]*>            \s*
+                            ([\d\-.]+)      # account number
+                        </a>                \s*
                         (?: <sup>[^<]*</sup> )?
                         [^<]*
-					</td>                   \s*
+                    </td>                   \s*
 
-                    <td[^>]*> \s* <span[^>]*> 
-                        ([^<]+)               # account name
-                    </span> \s* </td>       \s*
-                        
-					<td[^>]*>               \s*
+                    <td[^>]*>               \s*
                         <span[^>]*>         \s*
-						(-?\$[\d,\.]+)		# account balance
+                            ([^<]+)         # account name
+                        </span>             \s*
+                    </td>                   \s*
+                        
+                    <td[^>]*>               \s*
+                        <span[^>]*>         \s*
+                            [^<]*           # cash & cash investments
+                        </span>             \s*
+                    </td>                   \s*
+
+                    <td[^>]*>               \s*
+                        <span[^>]*>         \s*
+                        (-?\$[\d,\.]+)      # account balance
                         </span>           
-			!sxig;
+            !sxig;
 
     # use Data::Dumper;
     # print Dumper \@balance_info;
@@ -96,7 +104,7 @@ sub check_balance {
         my $number  = shift @balance_info;
         my $name    = shift @balance_info;
         my $balance = shift @balance_info;
-        $balance =~ s/[\$,]//g;
+        $balance =~ s/[\$,]//xg;
 
         push @accounts, (
             bless {
@@ -104,7 +112,7 @@ sub check_balance {
                 name       => $name,
                 sort_code  => $name,
                 account_no => $number,
-                ## parent		=> $self,
+                ## parent       => $self,
                 statement => undef,
             },
             "Finance::Bank::Schwab::Account"
@@ -120,7 +128,7 @@ no strict;
 
 sub AUTOLOAD {
     my $self = shift;
-    $AUTOLOAD =~ s/.*:://;
+    $AUTOLOAD =~ s/.*:://x;
     return $self->{$AUTOLOAD};
 }
 
@@ -138,13 +146,13 @@ Finance::Bank::Schwab - Check your Charles Schwab accounts from Perl
 
   use Finance::Bank::Schwab;
   my @accounts = Finance::Bank::Schwab->check_balance(
-	  username => "xxxxxxxxxxxx",
-	  password => "12345",
+      username => "xxxxxxxxxxxx",
+      password => "12345",
   );
 
   foreach (@accounts) {
-	  printf "%20s : %8s / %8s : USD %9.2f\n",
-	  $_->name, $_->sort_code, $_->account_no, $_->balance;
+      printf "%20s : %8s / %8s : USD %9.2f\n",
+      $_->name, $_->sort_code, $_->account_no, $_->balance;
   }
   
 =head1 DESCRIPTION

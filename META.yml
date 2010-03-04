@@ -16,15 +16,16 @@ name: Finance-Bank-Schwab
 provides:
   Finance::Bank::Schwab:
     file: lib/Finance/Bank/Schwab.pm
-    version: 1.16
+    version: 1.17
   Finance::Bank::Schwab::Account:
     file: lib/Finance/Bank/Schwab.pm
 requires:
   Carp: 0
   Crypt::SSLeay: 0
+  HTML::TableExtract: 2
   WWW::Mechanize: 1
 resources:
   bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=Finance-Bank-Schwab
   license: http://dev.perl.org/licenses/
   repository: http://github.com/mvgrimes/Finance-Bank-Schwab
-version: 1.16
+version: 1.17

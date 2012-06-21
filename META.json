@@ -38,7 +38,7 @@
    "provides" : {
       "Finance::Bank::Schwab" : {
          "file" : "lib/Finance/Bank/Schwab.pm",
-         "version" : "1.22"
+         "version" : "1.23"
       },
       "Finance::Bank::Schwab::Account" : {
          "file" : "lib/Finance/Bank/Schwab.pm",
@@ -57,5 +57,5 @@
          "url" : "http://github.com/mvgrimes/Finance-Bank-Schwab"
       }
    },
-   "version" : "1.22"
+   "version" : "1.23"
 }

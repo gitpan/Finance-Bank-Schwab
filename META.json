@@ -1,10 +1,10 @@
 {
-   "abstract" : "Check your Charles Schwab accounts from Perl",
+   "abstract" : "Check your account balances at Charles Schwab",
    "author" : [
       "Mark Grimes <mgrimes@cpan.org>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Module::Build version 0.4007, CPAN::Meta::Converter version 2.110440",
    "license" : [
       "perl_5"
    ],
@@ -16,31 +16,34 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "File::Spec" : "0",
+            "File::Spec" : 0,
             "Test::More" : "0.87"
          }
       },
       "configure" : {
          "requires" : {
-            "Module::Build" : "0.4"
+            "Module::Build" : "0.4004"
          }
       },
       "runtime" : {
          "requires" : {
-            "Carp" : "0",
-            "Crypt::SSLeay" : "0",
+            "Carp" : 0,
             "HTML::TableExtract" : "2",
-            "LWP::Protocol::https" : "0",
-            "WWW::Mechanize" : "1"
+            "LWP::Protocol::https" : "6.00",
+            "WWW::Mechanize" : "1.00"
          }
       }
    },
    "provides" : {
       "Finance::Bank::Schwab" : {
          "file" : "lib/Finance/Bank/Schwab.pm",
-         "version" : "1.23"
+         "version" : "2.03"
       },
       "Finance::Bank::Schwab::Account" : {
+         "file" : "lib/Finance/Bank/Schwab.pm",
+         "version" : 0
+      },
+      "Finance::Bank::Schwab::Account::Positions" : {
          "file" : "lib/Finance/Bank/Schwab.pm",
          "version" : 0
       }
@@ -57,5 +60,5 @@
          "url" : "http://github.com/mvgrimes/Finance-Bank-Schwab"
       }
    },
-   "version" : "1.23"
+   "version" : "2.03"
 }
